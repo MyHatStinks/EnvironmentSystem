@@ -98,6 +98,9 @@ cvars.AddChangeCallback( "weather_systemtime", function( cvar, old, new )
 	
 	NextTick = 0
 end)
+cvars.AddChangeCallback( "weather_daylength", function( cvar, old, new )
+	NextTick = CurTime()+ ((tonumber(new)/1440)*60)
+end)
 
 util.AddNetworkString( "Weather System Update Lights" )
 local function UpdateWeatherLighting()
@@ -241,6 +244,9 @@ local function TimeOfDay()
 		Time.m = tonumber( os.date( "%M" ) )
 		
 		if oh ~= Time.h then
+			hook.Call( "TimeOfDayHour", nil, Time.h )
+			hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
+			
 			UpdateWeatherLighting( TimeLighting[Time.h].light )
 			if not Weather.Active then Clouds.Target = TimeLighting[Time.h].cloud end
 			if Time.h>=23 then
@@ -252,11 +258,14 @@ local function TimeOfDay()
 					end
 				end
 			end
+		elseif om ~= Time.m then
+			hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
 		end
 	else
 		NextTick = CurTime()+ ((DayLength:GetInt()/1440)*60) //Next tick
 		
 		Time.m = Time.m+1 //Add a minute
+		
 		if Time.m >= 60 then //We're over the top
 			Time.h = Time.h+1 //Add an hour
 			Time.m = 0 //Reset minutes
@@ -277,7 +286,10 @@ local function TimeOfDay()
 					end
 				end
 			end
+			
+			hook.Call( "TimeOfDayHour", nil, Time.h )
 		end
+		hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
 	end
 	
 	Weather.PaintSky()
