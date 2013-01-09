@@ -48,6 +48,8 @@ local UseWeather = CreateConVar( "weather_default", "sun", flags, "Default weath
 Weather = Weather or {}
 
 function Weather.PaintSky()
+	if Weather.Blacklisted and Weather.Blacklisted.time then return end
+	
 	local ActiveColors = {}
 	if TransitionRate and table.Count(TransitionRate)>0 then
 		for _,n in pairs( {"top", "bot", "dusk"} ) do
@@ -113,6 +115,8 @@ end
 
 util.AddNetworkString( "Weather System Random Event" )
 local function WeatherSystemRandomEffect()
+	if Weather.Blacklisted and Weather.Blacklisted.weather then return false end
+	
 	if (not Weather.Active) or (not (Weather.Effects[Weather.Active].RandomEffect or Weather.Effects[Weather.Active].RandomClientEffect)) then 
 		timer.Destroy( "Weather Systems Weather Effects" )
 		return false
@@ -131,6 +135,8 @@ end
 
 util.AddNetworkString( "Weather System ChangeWeather" )
 local function SetWeather( weather )
+	if Weather.Blacklisted and Weather.Blacklisted.weather and weather~="sun" then return SetWeather("sun") end
+	
 	if not (weather and Weather.Effects[weather]) then return false end
 	if (weather==Weather.Active) or ((not Weather.Active) and weather=="sun") then return false end
 	
@@ -167,6 +173,8 @@ local function RandomKey(t) //Slightly modified table.Random function
   end
 end
 local function SelectWeather()
+	if Weather.Blacklisted and Weather.Blacklisted.weather then return end
+	
 	if not UseRandom:GetBool() then
 		SetWeather( UseWeather:GetString() )
 		return false
@@ -184,32 +192,36 @@ local function SelectWeather()
 end
 
 local function WeatherSystemInitPostEntity()
-	//Erase interfering entities
-	for _,v in pairs( ents.FindByClass( "env_skypaint" ) ) do v:Remove() end
-	for _,v in pairs( ents.FindByClass( "env_sun" ) ) do v:Remove() end
-	
-	//Create our skypaint
-	paint = ents.Create( "env_skypaint" )
-	paint:Spawn()
-	Weather.SkyPaint = paint
-	
-	//Get the current time
-	Time.h = tonumber( os.date( "%H" ) )
-	Time.m = tonumber( os.date( "%M" ) )
-	
-	if Time.h>=23 then
-		TransitionRate = table.Copy( TimeLighting[23] )
-	else
-		for _,n in pairs( {"top", "bot", "dusk"} ) do
-			for k,v in pairs( TransitionRate[n] ) do
-				TransitionRate[n][k] = ( TimeLighting[Time.h+1][n][k] - TimeLighting[Time.h][n][k])/60
+	if not (Weather.Blacklisted and Weather.Blacklisted.time) then
+		//Erase interfering entities
+		for _,v in pairs( ents.FindByClass( "env_skypaint" ) ) do v:Remove() end
+		for _,v in pairs( ents.FindByClass( "env_sun" ) ) do v:Remove() end
+		
+		//Create our skypaint
+		paint = ents.Create( "env_skypaint" )
+		paint:Spawn()
+		Weather.SkyPaint = paint
+		
+		//Get the current time
+		Time.h = tonumber( os.date( "%H" ) )
+		Time.m = tonumber( os.date( "%M" ) )
+		
+		if Time.h>=23 then
+			TransitionRate = table.Copy( TimeLighting[23] )
+		else
+			for _,n in pairs( {"top", "bot", "dusk"} ) do
+				for k,v in pairs( TransitionRate[n] ) do
+					TransitionRate[n][k] = ( TimeLighting[Time.h+1][n][k] - TimeLighting[Time.h][n][k])/60
+				end
 			end
 		end
 	end
 	
-	UpdateWeatherLighting() //Set the lighting
-	SelectWeather()
-	timer.Create( "Weather System Weather Selector", 120, 0, SelectWeather )
+	if not (Weather.Blacklisted and Weather.Blacklisted.weather) then
+		UpdateWeatherLighting() //Set the lighting
+		SelectWeather()
+		timer.Create( "Weather System Weather Selector", 120, 0, SelectWeather )
+	end
 	
 	//Set the next tick to Now
 	NextTick = 0
@@ -217,6 +229,7 @@ end
 hook.Add( "InitPostEntity", "Weather System PostEntity", WeatherSystemInitPostEntity )
 
 local function TimeOfDay()
+	if Weather.Blacklisted and Weather.Blacklisted.time then return end
 	//Clouds //{
 		if Clouds.Target ~= Clouds.Current then
 			if Clouds.FadeValue > 0 then

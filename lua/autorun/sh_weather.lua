@@ -5,14 +5,17 @@
 
 if SERVER then
 	AddCSLuaFile()
+	AddCSLuaFile( "sh_weather_blacklist.lua" )
 	AddCSLuaFile( "cl_weather.lua" )
 	
+	include( "sh_weather_blacklist.lua" )
 	include( "sv_weather.lua" )
 	
 	resource.AddSingleFile( "sound/weathereffects/wind2.wav" )
 	resource.AddSingleFile( "materials/weathereffects/cloud_storm.vtf" )
 	resource.AddSingleFile( "materials/weathereffects/cloud_storm2.vtf" )
 elseif CLIENT then
+	include( "sh_weather_blacklist.lua" )
 	include( "cl_weather.lua" )
 end
 
@@ -38,6 +41,8 @@ Weather.Effects["fog"] = { Clouds = nil, CSize = nil, Sound = nil, HUD = nil, pa
 
 
 local function WeatherSystemInit()
+	if Weather.Blacklisted and Weather.Blacklisted.time then return end
+	
 	RunConsoleCommand( "sv_skyname", "painted" )
 end
 hook.Add( "Initialize", "Weather System Initialise", WeatherSystemInit )
