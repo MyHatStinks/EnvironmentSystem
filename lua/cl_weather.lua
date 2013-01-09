@@ -13,9 +13,10 @@ Weather = Weather or {}
 
 local function IsOutside()
 	local pos = LocalPlayer():EyePos()
-	local trace = util.TraceLine( {start = pos, endpos = pos+Vector(0,0,16384), mask=MASK_SOLID} )
+	local trace = util.TraceLine( {start = pos, endpos = pos+Vector(0,0,16384), mask=MASK_SOLID_BRUSHONLY} )
 	
 	Weather.Outside = (not trace.Hit) or trace.HitSky
+	
 	if Weather.Outside then
 		Weather.Height = math.min( (trace.Hit and (trace.HitPos.z - trace.StartPos.z) or 500) - 20, 400 )
 	else
