@@ -4,24 +4,25 @@ local function Collide(particle, hitpos, normal)
 	particle:SetStartSize(1)
 	particle:SetEndSize(1)
 	particle:SetDieTime(0)
-	particle.Emitter:Finish()
 	
-	--if Weather.Outside then 
-	local Splash = EffectData() 
-		Splash:SetStart(hitpos)
-		Splash:SetOrigin(hitpos)
-		Splash:SetScale( math.random( 1,3 ) )
-		Splash:SetFlags(0)
-		--Splash:SetCollide(true)
+	if (math.random(1,particle.Emitter:GetNumActiveParticles()*2)<=1) and (LocalPlayer():GetPos()[3]+100 > hitpos[3])then 
+		local Splash = EffectData()
+		  Splash:SetStart(hitpos)
+		  Splash:SetOrigin(hitpos)
+		  Splash:SetScale( math.random( 1,3 ) )
+		  Splash:SetMagnitude( 0.1 )
+		  Splash:SetFlags(0)
+		  
 		util.Effect( "watersplash", Splash )
-	--end
+	end
+	particle.Emitter:Finish()
 end
 
 function EFFECT:Init(data)
 	local emitter = ParticleEmitter(LocalPlayer():GetPos())
 	local PerfMode = (data:GetFlags(PerfMode) >= 1)
 	local SubtleMode = (data:GetFlags(PerfMode) == 2)
-	for i=0, (SubtleMode and 20) or (PerfMode and 50) or 300 do
+	for i=0, (SubtleMode and 20) or (PerfMode and 50) or 200 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
 		local distance = PerfMode and 1024 or 2048

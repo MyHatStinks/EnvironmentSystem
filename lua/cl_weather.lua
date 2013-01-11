@@ -7,7 +7,7 @@ local ActiveWeather = "sun"
 
 local PerfMode = CreateClientConVar( "weather_performance_mode", 0, true, false )
 local HUDEffects = CreateClientConVar( "weather_hud_effects", 1, true, false )
-local Volume = CreateClientConVar( "weather_volume", 0.5, true, false )
+local Volume = CreateClientConVar( "weather_volume", 0.2, true, false )
 
 Weather = Weather or {}
 

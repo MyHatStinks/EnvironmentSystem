@@ -11,7 +11,7 @@ function EFFECT:Init(data)
 	local emitter = ParticleEmitter(LocalPlayer():GetPos())
 	local PerfMode = (data:GetFlags(PerfMode) >= 1)
 	local SubtleMode = (data:GetFlags(PerfMode) == 2)
-	for i=0, SubtleMode and 10 or (PerfMode and 150) or 500 do
+	for i=0, SubtleMode and 10 or (PerfMode and 150) or 300 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
 		local distance = PerfMode and 1024 or 2048
