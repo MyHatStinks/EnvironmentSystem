@@ -68,7 +68,10 @@ function Weather.PaintSky()
 	paint:SetKeyValue( "bottomcolor", ActiveColors["bot"] )
 	paint:SetKeyValue( "duskcolor", ActiveColors["dusk"] )
 	
-	local STime = Time.h*60 + Time.m
+	local y = UseSystemTime:GetBool() and 60 or ((DayLength:GetInt()/1440)*60) //Length of a tick
+	local Seconds = 1-((NextTick-CurTime()) / y) //This isn't really seconds, but whatever
+	
+	local STime = Time.h*60 + Time.m + Seconds
 	local normal = "0 0 0"
 	if STime>300 and STime<1320 then
 		local n = ((STime-380)/860)*2
@@ -248,9 +251,11 @@ local function TimeOfDay()
 		paint:SetKeyValue( "starspeed", Weather.Active and Weather.Effects[Weather.Active].CScroll or 0.01 )
 	//}
 	
+	Weather.PaintSky()
+	
 	if CurTime()<NextTick then return end //Should we work?
 	if UseSystemTime:GetBool() then
-		NextTick = CurTime()+15
+		NextTick = CurTime()+60
 		local oh, om = Time.h, Time.m
 		
 		Time.h = tonumber( os.date( "%H" ) )
@@ -304,8 +309,6 @@ local function TimeOfDay()
 		end
 		hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
 	end
-	
-	Weather.PaintSky()
 end
 hook.Add( "Think", "Weather System TimeOfDay Think", TimeOfDay )
 
