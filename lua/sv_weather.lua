@@ -64,6 +64,7 @@ function Weather.PaintSky()
 			ActiveColors[n] = ActiveColors[n]..tostring(TimeLighting[Time.h][n][3])
 		end
 	end
+	if not paint then paint = Weather.SkyPaint end
 	paint:SetKeyValue( "topcolor", ActiveColors["top"] )
 	paint:SetKeyValue( "bottomcolor", ActiveColors["bot"] )
 	paint:SetKeyValue( "duskcolor", ActiveColors["dusk"] )
@@ -244,7 +245,8 @@ local function TimeOfDay()
 			Clouds.FadeValue = math.Approach( Clouds.FadeValue, 1, 0.05)
 		end
 		local cscale = Weather.Active and (Weather.Effects[Weather.Active].CSize or 1) or TimeLighting[Time.h].cscale or 1
-	
+		
+		if not paint then paint = Weather.SkyPaint end
 		paint:SetKeyValue( "starfade", Clouds.FadeValue )
 		paint:SetKeyValue( "startexture", Clouds.Current )
 		paint:SetKeyValue( "starscale", cscale or 1 )

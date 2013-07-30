@@ -4,17 +4,16 @@ local function Collide(particle, hitpos, normal)
 	particle:SetStartSize(1)
 	particle:SetEndSize(1)
 	particle:SetDieTime(1)
-	particle.Emitter:Finish()
 end
 
 function EFFECT:Init(data)
-	local emitter = ParticleEmitter(LocalPlayer():GetPos())
-	local PerfMode = (data:GetFlags(PerfMode) >= 1)
-	local SubtleMode = (data:GetFlags(PerfMode) == 2)
-	for i=0, SubtleMode and 10 or (PerfMode and 150) or 300 do
+	local emitter = Weather and Weather.ParticleEmitter
+	if not emitter then print( "EMITTER MISSING" ) return end
+	
+	for i=0, 300 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
-		local distance = PerfMode and 1024 or 2048
+		local distance = 2048
 		local x = math.sin(b)*math.sin(a)*distance
 		local y = math.sin(b)*math.cos(a)*distance
 		

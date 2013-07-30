@@ -24,8 +24,8 @@ Weather = Weather or {}
 Weather.Effects = {}
 Weather.Effects["sun"] = { Clouds = nil, CSize = nil, Sound = nil, RandomEffect = nil, RandomClientEffect = nil, HUD = nil, particle = nil, StartFunc = nil, EndFunc = nil}
 Weather.Effects["snow"] = { Clouds = "weathereffects/cloud_storm", CSize = 4, Sound = "weathereffects/wind2.wav", HUD = "Effects/splashwake1", HUDMax = 20, HUDMin = 40, particle = "weathersystem_snow", LightMod = (-2) }
-Weather.Effects["rain"] = { Clouds = "weathereffects/cloud_storm2", CSize = 4, Sound = "ambient/water/water_flow_loop1.wav", HUD = "Effects/splash1", HUDCol = {100,100,150}, particle = "weathersystem_rain", LightMod = (-1) }
-Weather.Effects["storm"] = { Clouds = "weathereffects/cloud_storm2", CSize = 4, Sound = "ambient/water/water_flow_loop1.wav", HUD = "Effects/splash2", HUDCol = {100,100,150}, particle = "weathersystem_storm", LightMod = (-2), RandomSounds = {"ambient/atmosphere/thunder1.wav", "ambient/atmosphere/thunder2.wav", "ambient/atmosphere/thunder3.wav", "ambient/atmosphere/thunder4.wav"},
+Weather.Effects["rain"] = { Clouds = "weathereffects/cloud_storm2", CSize = 4, Sound = "ambient/water/water_flow_loop1.wav", HUD = "Effects/splash1", HUDCol = {200,200,255}, particle = "weathersystem_rain", LightMod = (-1) }
+Weather.Effects["storm"] = { Clouds = "weathereffects/cloud_storm2", CSize = 4, Sound = "ambient/water/water_flow_loop1.wav", HUD = "Effects/splash2", HUDCol = {200,200,255}, particle = "weathersystem_storm", LightMod = (-2), RandomSounds = {"ambient/atmosphere/thunder1.wav", "ambient/atmosphere/thunder2.wav", "ambient/atmosphere/thunder3.wav", "ambient/atmosphere/thunder4.wav"},
 	RandomClientEffect = function( self )
 		timer.Simple( math.Rand(0, 1.5), function() surface.PlaySound( table.Random( self.RandomSounds ) ) end )
 	end, RandomEffect = function()

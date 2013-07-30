@@ -1,30 +1,44 @@
 
 local function Collide(particle, hitpos, normal)
-	particle:SetEndAlpha(0)
-	particle:SetStartSize(1)
-	particle:SetEndSize(1)
-	particle:SetDieTime(0)
-	
-	if (math.random(1,particle.Emitter:GetNumActiveParticles())<=2) and (LocalPlayer():GetPos()[3]+100 > hitpos[3])then 
-		local Splash = EffectData()
-		  Splash:SetStart(hitpos)
-		  Splash:SetOrigin(hitpos)
-		  Splash:SetScale( math.random( 1,3 ) )
-		  Splash:SetFlags(0)
-		  
-		util.Effect( "watersplash", Splash )
+	for i2=1,2 do
+		Splash = Weather.ParticleEmitter:Add("particle/snow", hitpos)
+		Splash:SetLifeTime(0)
+		Splash:SetDieTime(math.Rand(0.10, 0.50))
+		Splash:SetStartSize(1)
+		Splash:SetStartAlpha(255)
+		Splash:SetEndAlpha(0)
+		Splash:SetStartLength(5)
+		Splash:SetEndLength(0)
+		Splash:SetVelocity(Vector(0,0,10) + (VectorRand() * 5))
+		Splash:SetGravity(Vector(0,0,-100))
+		Splash:SetColor(200,200,250,200)
 	end
-	particle.Emitter:Finish()
+	
+	if(math.random(0,100) == 0) then
+		local Size = math.Rand(180,480)
+		Smoke = Weather.ParticleEmitter:Add("particle/smokesprites_000" .. math.random(1,9), hitpos + (normal * Size))
+		Smoke:SetLifeTime(0)
+		Smoke:SetDieTime(math.Rand(4, 10))
+		Smoke:SetStartSize(Size)
+		Smoke:SetEndSize(math.Rand(180,480))
+		Smoke:SetStartAlpha(10)
+		Smoke:SetEndAlpha(0)
+		Smoke:SetRoll(math.random(0,360))
+		Smoke:SetRollDelta(math.Rand(-0.2,0.2))
+		
+		sound.Play("ambient/water/rain_drip".. math.random(1,4) ..".wav", hitpos, 75, 100)
+	end
+	particle:SetDieTime(0)
 end
 
 function EFFECT:Init(data)
-	local emitter = ParticleEmitter(LocalPlayer():GetPos())
-	local PerfMode = (data:GetFlags(PerfMode) >= 1)
-	local SubtleMode = (data:GetFlags(PerfMode) == 2)
-	for i=0, SubtleMode and 20 or (PerfMode and 50) or 200 do
+	local emitter = Weather and Weather.ParticleEmitter
+	if not emitter then return end
+	
+	for i=0, 200 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
-		local distance = PerfMode and 1024 or 2048
+		local distance = 2048
 		local x = math.sin(b)*math.sin(a)*distance
 		local y = math.sin(b)*math.cos(a)*distance
 		
@@ -39,7 +53,7 @@ function EFFECT:Init(data)
 		local particle = emitter:Add("particle/rain.vmt", spawnpos)
 		if (particle) then
 			particle.Emitter = emitter
-			particle:SetVelocity(Vector(math.random(450,470),math.random(-10,10),math.random(-1000,-1200)))
+			particle:SetVelocity(Vector(math.random(-5,5),math.random(-5,5),-math.random(1500,2500)))
 			particle:SetRoll(math.random(-360,360))
 			particle:SetLifeTime(0)
 			particle:SetDieTime(10 + math.Rand(-1,1))
@@ -47,12 +61,14 @@ function EFFECT:Init(data)
 			particle:SetEndAlpha(150)
 			particle:SetStartSize(1)
 			particle:SetEndSize(1)
+			particle:SetStartLength( 10 )
+			particle:SetEndLength( 10 )
 			particle:SetAirResistance(50)
 			particle:SetGravity(Vector(0,0,math.random(-100,-50)))
 			particle:SetCollide(true)
 			particle:SetCollideCallback(Collide)
 			particle:SetBounce(0.01)
-			particle:SetColor(170,170,250,120)
+			particle:SetColor(220,220,250,200)
 		end
 	end
 	emitter:Finish()

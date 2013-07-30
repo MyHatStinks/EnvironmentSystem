@@ -5,9 +5,8 @@
 
 local ActiveWeather = "sun"
 
-local PerfMode = CreateClientConVar( "weather_performance_mode", 0, true, false )
 local HUDEffects = CreateClientConVar( "weather_hud_effects", 1, true, false )
-local Volume = CreateClientConVar( "weather_volume", 0.2, true, false )
+local Volume = CreateClientConVar( "weather_volume", 0.3, true, false )
 
 Weather = Weather or {}
 
@@ -32,7 +31,7 @@ local function PaintRain()
 	
 	if (HUDEffects:GetBool()) and ActiveRain and ( IsOutside() and s.angles.p < 35 ) then
 		if( CurTime() > HUDRainNextGenerate ) then
-			HUDRainNextGenerate = CurTime() + (PerfMode:GetBool() and math.Rand( 0.5, 1.0 ) or math.Rand( 0.1, 0.4 ))
+			HUDRainNextGenerate = CurTime() + math.Rand( 0.1, 0.4 )
 			
 			local t = { }
 			t.x = math.random( 0, ScrW() )
@@ -97,7 +96,6 @@ local function ClientThink()
 	
 	if ActiveParticle and (CurTime()>nexttick) then
 		local particles = EffectData()
-		particles:SetFlags( PerfMode:GetInt() or 0 )
 		util.Effect(ActiveParticle, particles)
 		
 		nexttick = CurTime()+0.25
@@ -150,5 +148,6 @@ net.Receive( "Weather System Update Lights", function()
 end)
 
 hook.Add( "InitPostEntity", "Weather System Client Init", function()
+	Weather.ParticleEmitter = ParticleEmitter( LocalPlayer():GetPos() )
 	RunConsoleCommand( "weather_refresh" )
 end)
