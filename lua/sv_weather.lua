@@ -114,7 +114,11 @@ local function UpdateWeatherLighting()
 	local level = math.max( 98, TimeLighting[Time.h].light + weather )
 	
 	engine.LightStyle( 0, string.char(level) )
-	timer.Simple(0.1, function() net.Start( "Weather System Update Lights" ) net.WriteInt(TimeLighting[Time.h].light + weather, 8) net.Broadcast() end)
+	timer.Simple(0.1, function()
+		net.Start( "Weather System Update Lights" )
+			net.WriteInt(TimeLighting[Time.h].light + weather, 8)
+		net.Broadcast()
+	end)
 end
 
 util.AddNetworkString( "Weather System Random Event" )
@@ -319,7 +323,11 @@ concommand.Add( "weather_refresh", function( ply, c, a )
 		net.Start( "Weather System ChangeWeather" )
 			net.WriteString( Weather.Active or "sun" )
 		net.Send( ply )
-		net.Start( "Weather System Update Lights" ) net.Send( ply )
+		
+		local weather = (Weather.Effects[Weather.Active or "sun"].LightMod or 0)
+		net.Start( "Weather System Update Lights" )
+			net.WriteInt(TimeLighting[Time.h].light + weather, 8)
+		net.Send( ply )
 	end
 end)
 concommand.Add( "weather_force", function( ply, c, a )
