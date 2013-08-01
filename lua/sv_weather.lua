@@ -114,7 +114,7 @@ local function UpdateWeatherLighting()
 	local level = math.max( 98, TimeLighting[Time.h].light + weather )
 	
 	engine.LightStyle( 0, string.char(level) )
-	timer.Simple(0.1, function() net.Start( "Weather System Update Lights" ) net.Broadcast() end)
+	timer.Simple(0.1, function() net.Start( "Weather System Update Lights" ) net.WriteInt(TimeLighting[Time.h].light + weather, 8) net.Broadcast() end)
 end
 
 util.AddNetworkString( "Weather System Random Event" )

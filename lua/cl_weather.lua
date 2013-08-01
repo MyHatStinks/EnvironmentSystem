@@ -143,11 +143,33 @@ end)
 net.Receive( "Weather System Random Event", function()
 	if Weather.Effects[ActiveWeather].RandomClientEffect then Weather.Effects[ActiveWeather]:RandomClientEffect() end
 end)
+local LightLevel = 1
 net.Receive( "Weather System Update Lights", function()
 	render.RedownloadAllLightmaps()
+	
+	local light = net.ReadInt( 8 )
+	LightLevel = math.Clamp(1- (109-light)/20 ,0.2,1)
 end)
 
 hook.Add( "InitPostEntity", "Weather System Client Init", function()
 	Weather.ParticleEmitter = ParticleEmitter( LocalPlayer():GetPos() )
 	RunConsoleCommand( "weather_refresh" )
+end)
+
+local ColMod = {
+	[ "$pp_colour_addr" ] = 0,
+	[ "$pp_colour_addg" ] = 0,
+	[ "$pp_colour_addb" ] = 0,
+	[ "$pp_colour_brightness" ] = 0,
+	[ "$pp_colour_contrast" ] = 1,
+	[ "$pp_colour_colour" ] = 1,
+	[ "$pp_colour_mulr" ] = 1,
+	[ "$pp_colour_mulg" ] = 1,
+	[ "$pp_colour_mulb" ] = 1
+}
+hook.Add( "RenderScreenspaceEffects", "WeatherSystem Client ScreenSpace", function()
+	ColMod[ "$pp_colour_contrast" ] = LightLevel
+	ColMod[ "$pp_colour_colour" ] = LightLevel
+	--print( LightLevel )
+	DrawColorModify( ColMod )
 end)
