@@ -10,34 +10,34 @@ local TransitionRate = {top={0,0,0}, bot={0,0,0}, dusk={0,0,0}} //Rate of transi
 local TimeLighting = {}
 local Clouds = {FadeValue = 1, Current = "skybox/starfield", Target = "skybox/starfield", Inactive = "skybox/starfield"}
 
-TimeLighting[0] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[1] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[2] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[3] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[4] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[0] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[1] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[2] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[3] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[4] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
 
-TimeLighting[5] = {	top={0, 0, 0}, bot={0, 0, 0}, dusk={0,0,0}, light = 100, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[6] = {	top={0, 0, 0}, bot={0.1, 0, 0}, dusk={0.2,0,0}, light = 102, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[7] = {	top={0.1, 0.1, 0.3}, bot={0.2, 0.1, 0}, dusk={0.2,0,0}, light = 104, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[8] = {	top={0.2, 0.35, 0.65}, bot={0.3, 0.15, 0.1}, dusk={0.1,0,0}, light = 106, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[9] = {	top={0.2, 0.45, 0.85}, bot={0.35, 0.25, 0.2}, dusk={0.1,0,0}, light = 107, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[10] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.55, 0.9}, dusk={0.05,0,0}, light = 108, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[5] = { top={0, 0, 0}, bot={0, 0, 0}, dusk={0,0,0}, light = 100, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[6] = { top={0, 0, 0}, bot={0.1, 0, 0}, dusk={0.2,0,0}, light = 102, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[7] = { top={0.1, 0.1, 0.3}, bot={0.2, 0.1, 0}, dusk={0.2,0,0}, light = 104, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[8] = { top={0.2, 0.35, 0.65}, bot={0.3, 0.15, 0.1}, dusk={0.1,0,0}, light = 106, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[9] = { top={0.2, 0.45, 0.85}, bot={0.35, 0.25, 0.2}, dusk={0.1,0,0}, light = 107, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[10] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.55, 0.9}, dusk={0.05,0,0}, light = 108, cloud = "skybox/clouds", cscale = 3 }
 
-TimeLighting[11] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[12] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[13] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[14] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[15] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[16] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 108, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[11] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[12] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[13] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[14] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[15] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 109, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[16] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.5, 0.9}, dusk={0,0,0}, light = 108, cloud = "skybox/clouds", cscale = 3 }
 
-TimeLighting[17] = {	top={0.3, 0.5, 0.9}, bot={0.4, 0.55, 0.9}, dusk={0.05,0,0}, light = 107, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[18] = {	top={0.2, 0.45, 0.85}, bot={0.35, 0.25, 0.2}, dusk={0.1,0,0}, light = 105, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[19] = {	top={0.2, 0.35, 0.65}, bot={0.3, 0.15, 0.1}, dusk={0.1,0,0}, light = 103, cloud = "skybox/clouds", cscale = 3 }
-TimeLighting[20] = {	top={0.1, 0.1, 0.3}, bot={0.2, 0.1, 0}, dusk={0.2,0,0}, light = 101, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[21] = {	top={0, 0, 0}, bot={0, 0, 0}, dusk={0.1,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
-TimeLighting[22] = {	top={0, 0, 0}, bot={0, 0, 0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[17] = { top={0.3, 0.5, 0.9}, bot={0.4, 0.55, 0.9}, dusk={0.05,0,0}, light = 107, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[18] = { top={0.2, 0.45, 0.85}, bot={0.35, 0.25, 0.2}, dusk={0.1,0,0}, light = 105, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[19] = { top={0.2, 0.35, 0.65}, bot={0.3, 0.15, 0.1}, dusk={0.1,0,0}, light = 103, cloud = "skybox/clouds", cscale = 3 }
+TimeLighting[20] = { top={0.1, 0.1, 0.3}, bot={0.2, 0.1, 0}, dusk={0.2,0,0}, light = 101, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[21] = { top={0, 0, 0}, bot={0, 0, 0}, dusk={0.1,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
+TimeLighting[22] = { top={0, 0, 0}, bot={0, 0, 0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield", cscale = 1 }
 
-TimeLighting[23] = {	top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield" }
+TimeLighting[23] = { top={0,0,0}, bot={0,0,0}, dusk={0,0,0}, light = 99, cloud = "skybox/starfield" }
 
 local flags = bit.bor( FCVAR_ARCHIVE, FCVAR_GAMEDLL, FCVAR_DEMO, FCVAR_CLIENTCMD_CAN_EXECUTE )
 local UseSystemTime = CreateConVar( "weather_systemtime", 1, flags, "Whether the weather system should use the operating system clock. Default 1." ) //Use the system time
