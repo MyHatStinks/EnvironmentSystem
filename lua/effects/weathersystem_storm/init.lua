@@ -35,7 +35,7 @@ function EFFECT:Init(data)
 	local emitter = Weather and Weather.ParticleEmitter
 	if not emitter then return end
 	
-	for i=0, 200 do
+	for i=0, 150 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
 		local distance = 2048

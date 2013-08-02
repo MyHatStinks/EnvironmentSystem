@@ -3,17 +3,17 @@ local function Collide(particle, hitpos, normal)
 	particle:SetEndAlpha(200)
 	particle:SetStartSize(1)
 	particle:SetEndSize(1)
-	particle:SetDieTime(1)
+	particle:SetDieTime(5)
 end
 
 function EFFECT:Init(data)
 	local emitter = Weather and Weather.ParticleEmitter
-	if not emitter then print( "EMITTER MISSING" ) return end
+	if not emitter then return end
 	
-	for i=0, 300 do
+	for i=0, 100 do
 		local a = math.random(9999)
 		local b = math.random(1,180)
-		local distance = 2048
+		local distance = 1024--2048
 		local x = math.sin(b)*math.sin(a)*distance
 		local y = math.sin(b)*math.cos(a)*distance
 		
