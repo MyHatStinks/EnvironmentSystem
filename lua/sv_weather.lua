@@ -169,7 +169,41 @@ local function SetWeather( weather )
 	
 	UpdateWeatherLighting()
 	
+	timer.Start( "Weather System Weather Selector"  ) --Restart the randomisation timer
+	
 	return true
+end
+Weather.SetWeather = SetWeather
+
+function Weather.SetTime( h, m )
+	m = m or 0
+	
+	if UseSystemTime:GetBool() then ServerLog( "Weather SetTime failed: System time is enabled!\n" ) return end
+	
+	local oh, om = Time.h, Time.m
+	
+	Time.h = h
+	Time.m = m
+	
+	NextTick = CurTime()+ ((DayLength:GetInt()/1440)*60) //Next tick
+	if oh~=h then
+		UpdateWeatherLighting( TimeLighting[Time.h].light )
+		if not Weather.Active then Clouds.Target = TimeLighting[Time.h].cloud end
+		if Time.h>=23 then
+			TransitionRate = table.Copy( TimeLighting[23] )
+		else
+			for _,n in pairs( {"top", "bot", "dusk"} ) do
+				for k,v in pairs( TransitionRate[n] ) do
+					TransitionRate[n][k] = ( TimeLighting[Time.h+1][n][k] - TimeLighting[Time.h][n][k])/60
+				end
+			end
+		end
+		
+		hook.Call( "TimeOfDayHour", nil, Time.h )
+		hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
+	elseif om~=m then
+		hook.Call( "TimeOfDayMinute", nil, Time.h, Time.m )
+	end
 end
 
 local function RandomKey(t) //Slightly modified table.Random function
@@ -184,7 +218,7 @@ local function SelectWeather()
 	if Weather.Blacklisted and Weather.Blacklisted.weather then return end
 	
 	if not UseRandom:GetBool() then
-		SetWeather( UseWeather:GetString() )
+		--SetWeather( UseWeather:GetString() )
 		return false
 	end
 	local rand = math.random(1,100)
@@ -227,6 +261,10 @@ local function WeatherSystemInitPostEntity()
 	
 	if not (Weather.Blacklisted and Weather.Blacklisted.weather) then
 		UpdateWeatherLighting() //Set the lighting
+		
+		if not UseRandom:GetBool() then
+			SetWeather( UseWeather:GetString() )
+		end
 		SelectWeather()
 		timer.Create( "Weather System Weather Selector", 120, 0, SelectWeather )
 	end
@@ -318,18 +356,6 @@ local function TimeOfDay()
 end
 hook.Add( "Think", "Weather System TimeOfDay Think", TimeOfDay )
 
-concommand.Add( "weather_refresh", function( ply, c, a )
-	if ply and IsValid( ply ) then
-		net.Start( "Weather System ChangeWeather" )
-			net.WriteString( Weather.Active or "sun" )
-		net.Send( ply )
-		
-		local weather = (Weather.Effects[Weather.Active or "sun"].LightMod or 0)
-		net.Start( "Weather System Update Lights" )
-			net.WriteInt(TimeLighting[Time.h].light + weather, 8)
-		net.Send( ply )
-	end
-end)
 concommand.Add( "weather_force", function( ply, c, a )
 	if IsValid(ply) and not ply:IsSuperAdmin() then return end
 	
@@ -345,4 +371,30 @@ concommand.Add( "weather_rand", function( ply, c, a )
 	else
 		if IsValid( ply ) then ply:ChatPrint( "Randomise failed" ) else print( "Randomise failed" ) end
 	end
+end)
+
+local PhraseToHour = {
+	["midnight"] = 1,
+	["dawn"] = 6,
+	["day"] = 8,
+	["noon"] = 12,
+	["dusk"] = 19,
+	["night"] = 21,
+}
+concommand.Add( "weather_time", function( ply, c, a )
+	if IsValid(ply) and not ply:IsSuperAdmin() then return end
+	if not a then return end
+	
+	local h,m = tonumber(a[1]), tonumber(a[2])
+	if (not h) or (h<0) or (h>23) then
+		h = PhraseToHour[ string.lower(tostring(a[1])) ]
+		if h then
+			Weather.SetTime( h, m )
+		else
+			if IsValid( ply ) then ply:ChatPrint( "Set Time failed, invalid time" ) else print( "Set Time failed, invalid time" ) end
+			return
+		end
+	end
+	
+	Weather.SetTime( h, m )
 end)
