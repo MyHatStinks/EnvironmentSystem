@@ -356,6 +356,18 @@ local function TimeOfDay()
 end
 hook.Add( "Think", "Weather System TimeOfDay Think", TimeOfDay )
 
+concommand.Add( "weather_refresh", function( ply, c, a )
+	if ply and IsValid( ply ) then
+		net.Start( "Weather System ChangeWeather" )
+			net.WriteString( Weather.Active or "sun" )
+		net.Send( ply )
+		
+		local weather = (Weather.Effects[Weather.Active or "sun"].LightMod or 0)
+		net.Start( "Weather System Update Lights" )
+			net.WriteInt(TimeLighting[Time.h].light + weather, 8)
+		net.Send( ply )
+	end
+end)
 concommand.Add( "weather_force", function( ply, c, a )
 	if IsValid(ply) and not ply:IsSuperAdmin() then return end
 	

@@ -17,9 +17,9 @@ local function IsOutside()
 	Weather.Outside = (not trace.Hit) or trace.HitSky
 	
 	if Weather.Outside then
-		Weather.Height = math.min( (trace.Hit and (trace.HitPos.z - trace.StartPos.z) or 500) - 20, 400 )
+		Weather.Height = math.min( (trace.Hit and (trace.HitPos.z - trace.StartPos.z) or 800) - 20, 800 )
 	else
-		Weather.Height = math.max( (trace.Hit and (trace.HitPos.z - trace.StartPos.z) or 500) + 50, 400 )
+		Weather.Height = math.max( (trace.Hit and (trace.HitPos.z - trace.StartPos.z) or 800) + 100, 400 )
 	end
 	return Weather.Outside
 end
